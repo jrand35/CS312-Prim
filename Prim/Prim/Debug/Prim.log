@@ -1,0 +1,6 @@
+﻿  MyForm.cpp
+  Source.cpp
+  Generating Code...
+  MyForm.obj : /DEBUG:FASTLINK is not supported when managed code is present; restarting link with /DEBUG:FULL
+  Prim.vcxproj -> K:\Github\CS312-Prim\Prim\Debug\Prim.exe
+  Prim.vcxproj -> K:\Github\CS312-Prim\Prim\Debug\Prim.pdb (Partial PDB)
