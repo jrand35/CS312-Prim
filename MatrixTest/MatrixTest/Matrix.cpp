@@ -12,8 +12,6 @@ Matrix::Matrix(int width, int height) {
 			data[i][j] = 0;
 		}
 	}
-
-	data[10][5] = 5;
 }
 
 Matrix::~Matrix() {
@@ -24,9 +22,10 @@ Matrix::~Matrix() {
 }
 
 void Matrix::Display() {
-	for (int i = 0; i < width; i++) {
-		for (int j = 0; j < height; j++) {
-
+	for (int i = 0; i < height; i++) {
+		for (int j = width - 1; j >= 0; j--) {
+			std::cout << data[j][i] << " ";
 		}
+		std::cout << std::endl;
 	}
 }

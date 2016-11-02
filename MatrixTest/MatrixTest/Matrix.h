@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 class Matrix {
 public:
 	Matrix(int, int);
