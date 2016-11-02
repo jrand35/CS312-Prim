@@ -34,12 +34,6 @@ namespace Prim {
 			if (components)
 			{
 				delete components;
-				for (int i = 0; i < ARRAY_SIZE; i++) {
-					delete nodes[i];
-					delete[] connectionMatrix[i];
-				}
-				delete[] connectionMatrix;
-				//Deleting connectionMatrix properly?
 			}
 		}
 	private: System::Windows::Forms::Panel^  panel1;
@@ -99,30 +93,12 @@ namespace Prim {
 		}
 #pragma endregion
 
-		int **InitializeConnectionMatrix(){
-			int **matrix = new int*[ARRAY_SIZE];
-			for (int i = 0; i < ARRAY_SIZE; i++){
-				(matrix)[i] = new int[ARRAY_SIZE];
-				for (int j = 0; j < ARRAY_SIZE; j++){
-					(matrix)[i][j] = 0;
-				}
-			}
-			return matrix;
-		}
-
-		//May not be necessary...
-		void Connection(int *matrix[], int x, int y, int value){
-			matrix[x][y] = value;
-			matrix[y][x] = value;
-		}
-
 		//array<Rectangle*>^ nodes;
 		array<Label^>^ nodes;
 		Graphics ^g;
 		SolidBrush ^b;
 		Pen ^normalPen;
 		Pen ^spanPen;
-		int **connectionMatrix;
 
 	private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
 
@@ -131,7 +107,6 @@ namespace Prim {
 		g = panel1->CreateGraphics();
 		b = gcnew SolidBrush(Color::Blue);
 		normalPen = gcnew Pen(Color::LightBlue);
-		connectionMatrix = InitializeConnectionMatrix();
 		//Scatter the nodes in random places around the panel
 		nodes[0] = newLabel("0", 40, 10);
 		nodes[1] = newLabel("1", 0, 150);
@@ -150,72 +125,16 @@ namespace Prim {
 		nodes[14] = newLabel("14", 270, 105);
 		nodes[15] = newLabel("15", 160, 80);
 
-		Connection(connectionMatrix, 0, 2, 10);
-		Connection(connectionMatrix, 0, 6, 8);
-		Connection(connectionMatrix, 0, 4, 6);
-		Connection(connectionMatrix, 0, 7, 12);
-
-		Connection(connectionMatrix, 1, 2, 8);
-		Connection(connectionMatrix, 1, 3, 9);
-		Connection(connectionMatrix, 1, 5, 10);
-
-		Connection(connectionMatrix, 2, 3, 6);
-		Connection(connectionMatrix, 2, 1, 8);
-		Connection(connectionMatrix, 2, 0, 10);
-		Connection(connectionMatrix, 2, 6, 5);
-		Connection(connectionMatrix, 2, 8, 7);
-
-		Connection(connectionMatrix, 3, 1, 9);
-		Connection(connectionMatrix, 3, 2, 6);
-		Connection(connectionMatrix, 3, 9, 9);
-
-		Connection(connectionMatrix, 4, 5, 14);
-		Connection(connectionMatrix, 4, 7, 7);
-		Connection(connectionMatrix, 4, 0, 6);
-
-		Connection(connectionMatrix, 5, 4, 14);
-		Connection(connectionMatrix, 5, 7, 16);
-		Connection(connectionMatrix, 5, 1, 10);
-
-		Connection(connectionMatrix, 6, 2, 5);
-		Connection(connectionMatrix, 6, 0, 8);
-
-		Connection(connectionMatrix, 7, 5, 16);
-		Connection(connectionMatrix, 7, 0, 12);
-		Connection(connectionMatrix, 7, 4, 7);
-
-		Connection(connectionMatrix, 8, 2, 7);
-		Connection(connectionMatrix, 8, 10, 10);
-
-		Connection(connectionMatrix, 9, 3, 9);
-		Connection(connectionMatrix, 9, 12, 10);
-
-		Connection(connectionMatrix, 10, 8, 10);
-		Connection(connectionMatrix, 10, 12, 16);
-		Connection(connectionMatrix, 10, 14, 7);
-		Connection(connectionMatrix, 10, 15, 6);
-
-		Connection(connectionMatrix, 11, 12, 8);
-
-		Connection(connectionMatrix, 12, 11, 8);
-		Connection(connectionMatrix, 12, 9, 10);
-		Connection(connectionMatrix, 12, 10, 16);
-
-		Connection(connectionMatrix, 14, 10, 7);
-		Connection(connectionMatrix, 14, 15, 6);
-
-		Connection(connectionMatrix, 15, 10, 9);
-		Connection(connectionMatrix, 15, 14, 6);
 	}
 	private: System::Void panel1_Paint(System::Object^  sender, System::Windows::Forms::PaintEventArgs^  e) {
 		//g->FillEllipse(b, 0, 0, 10, 10);
 		for (int i = 0; i < ARRAY_SIZE; i++) {
 			for (int j = 0; j < ARRAY_SIZE; j++){
-				if (connectionMatrix[i][j] > 0){
-					Label ^s = nodes[i];
-					Label ^e = nodes[j];
-					g->DrawLine(normalPen, s->Location.X + 16, s->Location.Y + 16, e->Location.X + 16, e->Location.Y + 16);
-				}
+				//if (connectionMatrix[i][j] > 0){
+				//	Label ^s = nodes[i];
+				//	Label ^e = nodes[j];
+				//	g->DrawLine(normalPen, s->Location.X + 16, s->Location.Y + 16, e->Location.X + 16, e->Location.Y + 16);
+				//}
 			}
 		}
 	}
