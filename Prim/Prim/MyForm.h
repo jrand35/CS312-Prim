@@ -39,6 +39,15 @@ namespace Prim {
 			}
 			delete connectionMatrix;
 		}
+	private: System::Windows::Forms::Button^  connectbutton;
+	protected:
+	private: System::Windows::Forms::TextBox^  weightbox;
+	private: System::Windows::Forms::TextBox^  node2box;
+	private: System::Windows::Forms::TextBox^  node1box;
+	private: System::Windows::Forms::Label^  errorlabel;
+
+
+	protected:
 	private: System::Windows::Forms::Panel^  panel1;
 
 
@@ -61,6 +70,28 @@ namespace Prim {
 				}
 			}
 			file.close();
+		}
+
+		bool CheckValidConnection(int node1, int node2, int weight, String ^&message) {
+			if (node1 < 0 || node1 > ARRAY_SIZE - 1) {
+				message = "Invalid index for node 1";
+				return false;
+			}
+			else if (node2 < 0 || node2 > ARRAY_SIZE - 1) {
+				message = "Invalid index for node 2";
+				return false;
+			}
+			else if (connectionMatrix->ConnectionExists(node1, node2)) {
+				message = "Connection already exists";
+				return false;
+			}
+			else if (weight <= 0) {
+				message = "Weight cannot be 0";
+				return false;
+			}
+			connectionMatrix->Connect(node1, node2, weight);
+			message = "Success";
+			return true;
 		}
 
 		Label^ newLabel(System::String ^text, int x, int y){
@@ -89,15 +120,67 @@ namespace Prim {
 		void InitializeComponent(void)
 		{
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
+			this->errorlabel = (gcnew System::Windows::Forms::Label());
+			this->weightbox = (gcnew System::Windows::Forms::TextBox());
+			this->node2box = (gcnew System::Windows::Forms::TextBox());
+			this->node1box = (gcnew System::Windows::Forms::TextBox());
+			this->connectbutton = (gcnew System::Windows::Forms::Button());
+			this->panel1->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// panel1
 			// 
+			this->panel1->Controls->Add(this->errorlabel);
+			this->panel1->Controls->Add(this->weightbox);
+			this->panel1->Controls->Add(this->node2box);
+			this->panel1->Controls->Add(this->node1box);
+			this->panel1->Controls->Add(this->connectbutton);
 			this->panel1->Location = System::Drawing::Point(12, 12);
 			this->panel1->Name = L"panel1";
 			this->panel1->Size = System::Drawing::Size(560, 538);
 			this->panel1->TabIndex = 0;
 			this->panel1->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MyForm::panel1_Paint);
+			// 
+			// errorlabel
+			// 
+			this->errorlabel->AutoSize = true;
+			this->errorlabel->Location = System::Drawing::Point(454, 143);
+			this->errorlabel->Name = L"errorlabel";
+			this->errorlabel->Size = System::Drawing::Size(28, 13);
+			this->errorlabel->TabIndex = 4;
+			this->errorlabel->Text = L"error";
+			this->errorlabel->TextAlign = System::Drawing::ContentAlignment::TopRight;
+			// 
+			// weightbox
+			// 
+			this->weightbox->Location = System::Drawing::Point(457, 91);
+			this->weightbox->Name = L"weightbox";
+			this->weightbox->Size = System::Drawing::Size(100, 20);
+			this->weightbox->TabIndex = 3;
+			// 
+			// node2box
+			// 
+			this->node2box->Location = System::Drawing::Point(457, 65);
+			this->node2box->Name = L"node2box";
+			this->node2box->Size = System::Drawing::Size(100, 20);
+			this->node2box->TabIndex = 2;
+			// 
+			// node1box
+			// 
+			this->node1box->Location = System::Drawing::Point(457, 39);
+			this->node1box->Name = L"node1box";
+			this->node1box->Size = System::Drawing::Size(100, 20);
+			this->node1box->TabIndex = 1;
+			// 
+			// connectbutton
+			// 
+			this->connectbutton->Location = System::Drawing::Point(482, 117);
+			this->connectbutton->Name = L"connectbutton";
+			this->connectbutton->Size = System::Drawing::Size(75, 23);
+			this->connectbutton->TabIndex = 0;
+			this->connectbutton->Text = L"Connect";
+			this->connectbutton->UseVisualStyleBackColor = true;
+			this->connectbutton->Click += gcnew System::EventHandler(this, &MyForm::connectbutton_Click);
 			// 
 			// MyForm
 			// 
@@ -108,6 +191,8 @@ namespace Prim {
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
+			this->panel1->ResumeLayout(false);
+			this->panel1->PerformLayout();
 			this->ResumeLayout(false);
 
 		}
@@ -172,5 +257,23 @@ namespace Prim {
 	}
 	private: System::Void label2_Click(System::Object^  sender, System::EventArgs^  e) {
 	}
+private: System::Void connectbutton_Click(System::Object^  sender, System::EventArgs^  e) {
+	//int node1 = Convert::ToInt32(node1box->Text);
+	//int node2 = Convert::ToInt32(node2box->Text);
+	//int weight = Convert::ToInt32(weightbox->Text);
+	int node1 = (node1box->Text == "") ? -1 : int::Parse(node1box->Text);
+	int node2 = (node2box->Text == "") ? -1 : int::Parse(node2box->Text);
+	int weight = (weightbox->Text == "") ? -1 : int::Parse(weightbox->Text);
+
+	String ^message = gcnew String("");
+	bool success = CheckValidConnection(node1, node2, weight, message);
+	if (!success) {
+		errorlabel->Text = message;
+	}
+	else {
+		errorlabel->Text = "";
+		panel1->Refresh();
+	}
+}
 };
 }

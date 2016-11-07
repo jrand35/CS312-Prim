@@ -10,6 +10,7 @@ public:
 	~Matrix();
 	//void Display() const;
 	bool Connect(int, int, int);
+	bool ConnectionExists(int, int) const;
 	//void SetBeginning();
 	//bool AtEnd() const;
 	Connection *GetConnection(int);

@@ -63,6 +63,10 @@ bool Matrix::Connect(int node1, int node2, int weight) {
 	return true;
 }
 
+bool Matrix::ConnectionExists(int node1, int node2) const {
+	return (data[node1][node2] != 0 || data[node2][node1] != 0);
+}
+
 //void Matrix::SetBeginning() {
 //	it = connectionList.begin();
 //}
