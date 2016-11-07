@@ -27,21 +27,21 @@ Matrix::~Matrix() {
 	delete[] tree;
 }
 
-void Matrix::Display() const {
-	cout << "   ";
-	for (int i = 0; i < width; i++) {
-		cout << i << " " << ((i > 9) ? "" : " ");
-	}
-	cout << endl;
-
-	for (int i = 0; i < height; i++) {
-		cout << i << " " << ((i > 9) ? "" : " ");
-		for (int j = 0; j < width; j++) {
-			cout << data[j][i] << " " << ((data[j][i] > 9) ? "" : " ");
-		}
-		cout << std::endl;
-	}
-}
+//void Matrix::Display() const {
+//	cout << "   ";
+//	for (int i = 0; i < width; i++) {
+//		cout << i << " " << ((i > 9) ? "" : " ");
+//	}
+//	cout << endl;
+//
+//	for (int i = 0; i < height; i++) {
+//		cout << i << " " << ((i > 9) ? "" : " ");
+//		for (int j = 0; j < width; j++) {
+//			cout << data[j][i] << " " << ((data[j][i] > 9) ? "" : " ");
+//		}
+//		cout << std::endl;
+//	}
+//}
 
 bool Matrix::Connect(int node1, int node2, int weight) {
 	if (data[node1][node2] != 0 || data[node2][node1] != 0)
@@ -52,7 +52,7 @@ bool Matrix::Connect(int node1, int node2, int weight) {
 	c.Node1 = node1;
 	c.Node2 = node2;
 	c.Weight = weight;
-	connectionList.push_back(c);
+	connectionList.Add(c);
 
 	if (!tree[node1])
 		tree[node1] = true;
@@ -63,18 +63,22 @@ bool Matrix::Connect(int node1, int node2, int weight) {
 	return true;
 }
 
-void Matrix::SetBeginning() {
-	it = connectionList.begin();
-}
+//void Matrix::SetBeginning() {
+//	it = connectionList.begin();
+//}
 
-bool Matrix::AtEnd() const {
-	return (it == connectionList.end());
-}
+//bool Matrix::AtEnd() const {
+//	return (it == connectionList.end());
+//}
 
-Connection Matrix::GetConnection() {
-	Connection c = *it;
-	++it;
-	return c;
+//Connection Matrix::GetConnection() {
+//	Connection c = *it;
+//	++it;
+//	return c;
+//}
+
+Connection *Matrix::GetConnection(int index) {
+	return connectionList[index];
 }
 
 int Matrix::ConnectionCount() const {

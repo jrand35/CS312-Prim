@@ -1,4 +1,5 @@
 #pragma once
+#include "Matrix.h"
 using namespace std;
 
 const int ARRAY_SIZE = 16;
@@ -35,6 +36,7 @@ namespace Prim {
 			{
 				delete components;
 			}
+			delete connectionMatrix;
 		}
 	private: System::Windows::Forms::Panel^  panel1;
 
@@ -99,9 +101,10 @@ namespace Prim {
 		SolidBrush ^b;
 		Pen ^normalPen;
 		Pen ^spanPen;
+		Matrix *connectionMatrix;
 
 	private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
-
+		connectionMatrix = new Matrix(16, 16);
 		//nodes = gcnew array<Rectangle*>(ARRAY_SIZE);
 		nodes = gcnew array<Label^>(ARRAY_SIZE);
 		g = panel1->CreateGraphics();

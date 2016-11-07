@@ -1,0 +1,65 @@
+template<typename T>
+PtrArray<T>::PtrArray(){
+	max_size = ARRAY_START_SIZE;
+	data = new T*[max_size];
+	size = 0;
+}
+
+template<typename T>
+PtrArray<T>::~PtrArray(){
+	delete[] data;
+}
+
+template<typename T>
+void PtrArray<T>::Add(T &item){
+	if (size == max_size){
+		max_size += 50;
+		T **temp = new T*[max_size];
+		for (int i = 0; i < size; i++){
+			temp[i] = data[i];
+		}
+		for (int i = size; i < max_size; i++){
+			temp[i] = nullptr;
+		}
+
+		delete[] data;
+		data = temp;
+		temp = nullptr;
+	}
+
+	data[size] = &item;
+	size++;
+}
+
+template<typename T>
+void PtrArray<T>::RemoveAt(int index){
+	data[index] = nullptr;
+	for (int i = index; i < size - 1; i++){
+		data[i] = data[i + 1];
+	}
+	data[size - 1] = nullptr;
+	size--;
+}
+
+template<typename T>
+T *PtrArray<T>::operator[](int index){
+	return data[index];
+}
+
+template<typename T>
+T *PtrArray<T>::Get(int index){
+	return data[index];
+}
+
+template<typename T>
+int PtrArray<T>::GetSize(){
+	return size;
+}
+
+template<typename T>
+void PtrArray<T>::EmptyArray(){
+	for (int i = 0; i < size; i++){
+		data[i] = nullptr;
+	}
+	size = 0;
+}
