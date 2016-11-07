@@ -48,11 +48,11 @@ bool Matrix::Connect(int node1, int node2, int weight) {
 		return false;
 	data[node1][node2] = weight;
 	data[node2][node1] = weight;
-	Connection c;
-	c.Node1 = node1;
-	c.Node2 = node2;
-	c.Weight = weight;
-	connectionList.Add(c);
+	Connection *c = new Connection;;
+	c->Node1 = node1;
+	c->Node2 = node2;
+	c->Weight = weight;
+	connectionList.Add(*c);
 
 	if (!tree[node1])
 		tree[node1] = true;

@@ -1,6 +1,7 @@
 #pragma once
 #include "Matrix.h"
-using namespace std;
+#include <fstream>
+#include <string>
 
 const int ARRAY_SIZE = 16;
 
@@ -44,6 +45,23 @@ namespace Prim {
 
 	protected:
 	private:
+
+		void LoadMatrix(Matrix &m) {
+			ifstream file;
+			file.open("Small Graph.txt");
+			if (file.fail()) {
+				return;
+			}
+			while (!file.eof()) {
+				string n1, n2, w;
+				file >> n1 >> n2 >> w;
+				if (n1 != "" && n1 != "Vertex")
+				{
+					m.Connect(stoi(n1), stoi(n2), stoi(w));
+				}
+			}
+			file.close();
+		}
 
 		Label^ newLabel(System::String ^text, int x, int y){
 			Label^ l = gcnew Label();
@@ -96,7 +114,7 @@ namespace Prim {
 #pragma endregion
 
 		//array<Rectangle*>^ nodes;
-		array<Label^>^ nodes;
+		cli::array<Label^>^ nodes;
 		Graphics ^g;
 		SolidBrush ^b;
 		Pen ^normalPen;
@@ -105,10 +123,9 @@ namespace Prim {
 
 	private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
 		connectionMatrix = new Matrix(16, 16);
-		//Testing purposes
-		connectionMatrix->Connect(4, 5, 6);
+		LoadMatrix(*connectionMatrix);
 		//nodes = gcnew array<Rectangle*>(ARRAY_SIZE);
-		nodes = gcnew array<Label^>(ARRAY_SIZE);
+		nodes = gcnew cli::array<Label^, 1>(ARRAY_SIZE);
 		g = panel1->CreateGraphics();
 		b = gcnew SolidBrush(Color::Blue);
 		normalPen = gcnew Pen(Color::LightBlue);
@@ -150,7 +167,7 @@ namespace Prim {
 			Label ^s = nodes[c->Node1];
 			Label ^e = nodes[c->Node2];
 			int weight = c->Weight;
-			//g->DrawLine(normalPen, s->Location.X + 16, s->Location.Y + 16, e->Location.X + 16, e->Location.Y + 16);
+			g->DrawLine(normalPen, s->Location.X + 16, s->Location.Y + 16, e->Location.X + 16, e->Location.Y + 16);
 		}
 	}
 	private: System::Void label2_Click(System::Object^  sender, System::EventArgs^  e) {
