@@ -1,9 +1,9 @@
 #pragma once
+using namespace std;
 
 const int ARRAY_SIZE = 16;
 
 namespace Prim {
-
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;

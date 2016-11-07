@@ -10,12 +10,14 @@ public:
 	void Display() const;
 	bool Connect(int, int, int);
 	void SetBeginning();
-	bool AtEnd();
+	bool AtEnd() const;
 	Connection GetConnection();
+	int ConnectionCount() const;
 private:
 	list<Connection> connectionList;
 	list<Connection>::iterator it;
 	bool *tree;
 	int **data;
 	int width, height;
+	int connectionCount;
 };

@@ -1,6 +1,7 @@
 #include "Matrix.h"
 
 Matrix::Matrix(int width, int height) {
+	connectionCount = 0;
 	this->width = width;
 	this->height = height;
 	tree = new bool[width];
@@ -58,6 +59,7 @@ bool Matrix::Connect(int node1, int node2, int weight) {
 	if (!tree[node2])
 		tree[node2] = true;
 
+	connectionCount++;
 	return true;
 }
 
@@ -65,7 +67,7 @@ void Matrix::SetBeginning() {
 	it = connectionList.begin();
 }
 
-bool Matrix::AtEnd() {
+bool Matrix::AtEnd() const {
 	return (it == connectionList.end());
 }
 
@@ -73,4 +75,8 @@ Connection Matrix::GetConnection() {
 	Connection c = *it;
 	++it;
 	return c;
+}
+
+int Matrix::ConnectionCount() const {
+	return connectionCount;
 }
