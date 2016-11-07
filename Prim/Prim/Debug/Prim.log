@@ -1,5 +1,4 @@
-﻿  Matrix.cpp
-  MyForm.cpp
+﻿  MyForm.cpp
   Source.cpp
   Generating Code...
   Matrix.obj : /DEBUG:FASTLINK is not supported when managed code is present; restarting link with /DEBUG:FULL

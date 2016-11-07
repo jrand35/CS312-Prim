@@ -105,11 +105,14 @@ namespace Prim {
 
 	private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
 		connectionMatrix = new Matrix(16, 16);
+		//Testing purposes
+		connectionMatrix->Connect(4, 5, 6);
 		//nodes = gcnew array<Rectangle*>(ARRAY_SIZE);
 		nodes = gcnew array<Label^>(ARRAY_SIZE);
 		g = panel1->CreateGraphics();
 		b = gcnew SolidBrush(Color::Blue);
 		normalPen = gcnew Pen(Color::LightBlue);
+
 		//Scatter the nodes in random places around the panel
 		nodes[0] = newLabel("0", 40, 10);
 		nodes[1] = newLabel("1", 0, 150);
@@ -139,6 +142,15 @@ namespace Prim {
 				//	g->DrawLine(normalPen, s->Location.X + 16, s->Location.Y + 16, e->Location.X + 16, e->Location.Y + 16);
 				//}
 			}
+		}
+
+		//Draw each connection
+		for (int i = 0; i < connectionMatrix->ConnectionCount(); i++) {
+			Connection *c = connectionMatrix->GetConnection(i);
+			Label ^s = nodes[c->Node1];
+			Label ^e = nodes[c->Node2];
+			int weight = c->Weight;
+			//g->DrawLine(normalPen, s->Location.X + 16, s->Location.Y + 16, e->Location.X + 16, e->Location.Y + 16);
 		}
 	}
 	private: System::Void label2_Click(System::Object^  sender, System::EventArgs^  e) {
