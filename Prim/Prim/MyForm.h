@@ -47,6 +47,8 @@ namespace Prim {
 	private: System::Windows::Forms::Label^  errorlabel;
 
 
+
+
 	protected:
 	private: System::Windows::Forms::Panel^  panel1;
 
@@ -59,14 +61,18 @@ namespace Prim {
 			ifstream file;
 			file.open("Small Graph.txt");
 			if (file.fail()) {
-				return;
+				Application::Exit();
 			}
 			while (!file.eof()) {
 				string n1, n2, w;
 				file >> n1 >> n2 >> w;
 				if (n1 != "" && n1 != "Vertex")
 				{
-					m.Connect(stoi(n1), stoi(n2), stoi(w));
+					bool result = m.Connect(stoi(n1), stoi(n2), stoi(w));
+					if (!result) {
+						//returning false
+						Application::Exit();
+					}
 				}
 			}
 			file.close();
@@ -81,15 +87,15 @@ namespace Prim {
 				message = "Invalid index for node 2";
 				return false;
 			}
-			else if (connectionMatrix->ConnectionExists(node1, node2)) {
-				message = "Connection already exists";
+			else if (connectionMatrix->IsPrim(node1, node2)) {
+				message = "Prim connection already exists";
 				return false;
 			}
 			else if (weight <= 0) {
 				message = "Weight cannot be 0";
 				return false;
 			}
-			connectionMatrix->Connect(node1, node2, weight);
+			connectionMatrix->Prim(node1, node2);
 			message = "Success";
 			return true;
 		}
@@ -204,10 +210,10 @@ namespace Prim {
 		SolidBrush ^b;
 		Pen ^normalPen;
 		Pen ^spanPen;
-		Matrix *connectionMatrix;
+		Matrix *connectionMatrix = nullptr;
 
 	private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
-		connectionMatrix = new Matrix(16, 16);
+		connectionMatrix = new Matrix(ARRAY_SIZE, ARRAY_SIZE);
 		LoadMatrix(*connectionMatrix);
 		//nodes = gcnew array<Rectangle*>(ARRAY_SIZE);
 		nodes = gcnew cli::array<Label^, 1>(ARRAY_SIZE);
@@ -236,24 +242,25 @@ namespace Prim {
 	}
 	private: System::Void panel1_Paint(System::Object^  sender, System::Windows::Forms::PaintEventArgs^  e) {
 		//g->FillEllipse(b, 0, 0, 10, 10);
-		for (int i = 0; i < ARRAY_SIZE; i++) {
-			for (int j = 0; j < ARRAY_SIZE; j++){
-				//if (connectionMatrix[i][j] > 0){
-				//	Label ^s = nodes[i];
-				//	Label ^e = nodes[j];
-				//	g->DrawLine(normalPen, s->Location.X + 16, s->Location.Y + 16, e->Location.X + 16, e->Location.Y + 16);
-				//}
-			}
-		}
+		//for (int i = 0; i < ARRAY_SIZE; i++) {
+		//	for (int j = 0; j < ARRAY_SIZE; j++){
+		//		//if (connectionMatrix[i][j] > 0){
+		//		//	Label ^s = nodes[i];
+		//		//	Label ^e = nodes[j];
+		//		//	g->DrawLine(normalPen, s->Location.X + 16, s->Location.Y + 16, e->Location.X + 16, e->Location.Y + 16);
+		//		//}
+		//	}
+		//}
 
 		//Draw each connection
-		for (int i = 0; i < connectionMatrix->ConnectionCount(); i++) {
-			Connection *c = connectionMatrix->GetConnection(i);
-			Label ^s = nodes[c->Node1];
-			Label ^e = nodes[c->Node2];
-			int weight = c->Weight;
-			g->DrawLine(normalPen, s->Location.X + 16, s->Location.Y + 16, e->Location.X + 16, e->Location.Y + 16);
-		}
+		//For loop currently causing issues
+		//for (int i = 0; i < connectionMatrix->ConnectionCount(); i++) {
+		//	Connection *c = connectionMatrix->GetConnection(i);
+		//	Label ^s = nodes[c->Node1];
+		//	Label ^e = nodes[c->Node2];
+		//	int weight = c->Weight;
+		//	g->DrawLine(normalPen, s->Location.X + 16, s->Location.Y + 16, e->Location.X + 16, e->Location.Y + 16);
+		//}
 	}
 	private: System::Void label2_Click(System::Object^  sender, System::EventArgs^  e) {
 	}
