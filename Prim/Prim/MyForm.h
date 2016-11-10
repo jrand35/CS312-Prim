@@ -41,11 +41,11 @@ namespace Prim {
 		}
 	private: System::Windows::Forms::Button^  connectbutton;
 	protected:
-	private: System::Windows::Forms::TextBox^  weightbox;
+
 	private: System::Windows::Forms::TextBox^  node2box;
 	private: System::Windows::Forms::TextBox^  node1box;
 	private: System::Windows::Forms::Label^  errorlabel;
-	private: System::Windows::Forms::Label^  label3;
+
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::Label^  label1;
 	private: System::Windows::Forms::Label^  label4;
@@ -84,7 +84,7 @@ namespace Prim {
 			file.close();
 		}
 
-		bool CheckValidConnection(int node1, int node2, int weight, String ^&message) {
+		bool TryPrim(int node1, int node2, int weight, String ^&message) {
 			if (node1 < 0 || node1 > ARRAY_SIZE - 1) {
 				message = "Invalid index for node 1";
 				return false;
@@ -95,6 +95,10 @@ namespace Prim {
 			}
 			else if (node1 == node2) {
 				message = "Cannot connect to the same node";
+				return false;
+			}
+			else if (!connectionMatrix->ConnectionExists(node1, node2)) {
+				message = "These nodes are not connected";
 				return false;
 			}
 			else if (connectionMatrix->IsPrim(node1, node2)) {
@@ -129,6 +133,7 @@ namespace Prim {
 
 		void SetBlueLabel(Label ^label) {
 			label->BackColor = System::Drawing::Color::Blue;
+			label->ForeColor = System::Drawing::Color::White;
 		}
 		/// <summary>
 		/// Required designer variable.
@@ -143,18 +148,16 @@ namespace Prim {
 		void InitializeComponent(void)
 		{
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
+			this->PrimButton = (gcnew System::Windows::Forms::Button());
+			this->label5 = (gcnew System::Windows::Forms::Label());
+			this->StartVertex = (gcnew System::Windows::Forms::TextBox());
+			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->errorlabel = (gcnew System::Windows::Forms::Label());
-			this->weightbox = (gcnew System::Windows::Forms::TextBox());
 			this->node2box = (gcnew System::Windows::Forms::TextBox());
 			this->node1box = (gcnew System::Windows::Forms::TextBox());
 			this->connectbutton = (gcnew System::Windows::Forms::Button());
-			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->label2 = (gcnew System::Windows::Forms::Label());
-			this->label3 = (gcnew System::Windows::Forms::Label());
-			this->label4 = (gcnew System::Windows::Forms::Label());
-			this->StartVertex = (gcnew System::Windows::Forms::TextBox());
-			this->label5 = (gcnew System::Windows::Forms::Label());
-			this->PrimButton = (gcnew System::Windows::Forms::Button());
 			this->panel1->SuspendLayout();
 			this->SuspendLayout();
 			// 
@@ -164,11 +167,9 @@ namespace Prim {
 			this->panel1->Controls->Add(this->label5);
 			this->panel1->Controls->Add(this->StartVertex);
 			this->panel1->Controls->Add(this->label4);
-			this->panel1->Controls->Add(this->label3);
 			this->panel1->Controls->Add(this->label2);
 			this->panel1->Controls->Add(this->label1);
 			this->panel1->Controls->Add(this->errorlabel);
-			this->panel1->Controls->Add(this->weightbox);
 			this->panel1->Controls->Add(this->node2box);
 			this->panel1->Controls->Add(this->node1box);
 			this->panel1->Controls->Add(this->connectbutton);
@@ -178,22 +179,68 @@ namespace Prim {
 			this->panel1->TabIndex = 0;
 			this->panel1->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MyForm::panel1_Paint);
 			// 
+			// PrimButton
+			// 
+			this->PrimButton->Location = System::Drawing::Point(482, 263);
+			this->PrimButton->Name = L"PrimButton";
+			this->PrimButton->Size = System::Drawing::Size(75, 23);
+			this->PrimButton->TabIndex = 10;
+			this->PrimButton->Text = L"Prim";
+			this->PrimButton->UseVisualStyleBackColor = true;
+			this->PrimButton->Click += gcnew System::EventHandler(this, &MyForm::PrimButton_Click);
+			// 
+			// label5
+			// 
+			this->label5->AutoSize = true;
+			this->label5->Location = System::Drawing::Point(460, 221);
+			this->label5->Name = L"label5";
+			this->label5->Size = System::Drawing::Size(76, 13);
+			this->label5->TabIndex = 9;
+			this->label5->Text = L"Starting Vertex";
+			// 
+			// StartVertex
+			// 
+			this->StartVertex->Location = System::Drawing::Point(457, 237);
+			this->StartVertex->Name = L"StartVertex";
+			this->StartVertex->Size = System::Drawing::Size(100, 20);
+			this->StartVertex->TabIndex = 8;
+			// 
+			// label4
+			// 
+			this->label4->AutoSize = true;
+			this->label4->Location = System::Drawing::Point(460, 13);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(97, 13);
+			this->label4->TabIndex = 7;
+			this->label4->Text = L"Manually add edge";
+			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->Location = System::Drawing::Point(409, 68);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(42, 13);
+			this->label2->TabIndex = 5;
+			this->label2->Text = L"Node 2";
+			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Location = System::Drawing::Point(409, 42);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(42, 13);
+			this->label1->TabIndex = 5;
+			this->label1->Text = L"Node 1";
+			// 
 			// errorlabel
 			// 
 			this->errorlabel->AutoSize = true;
-			this->errorlabel->Location = System::Drawing::Point(454, 143);
+			this->errorlabel->Location = System::Drawing::Point(231, 13);
 			this->errorlabel->Name = L"errorlabel";
 			this->errorlabel->Size = System::Drawing::Size(28, 13);
 			this->errorlabel->TabIndex = 4;
 			this->errorlabel->Text = L"error";
 			this->errorlabel->TextAlign = System::Drawing::ContentAlignment::TopRight;
-			// 
-			// weightbox
-			// 
-			this->weightbox->Location = System::Drawing::Point(457, 91);
-			this->weightbox->Name = L"weightbox";
-			this->weightbox->Size = System::Drawing::Size(100, 20);
-			this->weightbox->TabIndex = 3;
 			// 
 			// node2box
 			// 
@@ -211,75 +258,13 @@ namespace Prim {
 			// 
 			// connectbutton
 			// 
-			this->connectbutton->Location = System::Drawing::Point(482, 117);
+			this->connectbutton->Location = System::Drawing::Point(482, 91);
 			this->connectbutton->Name = L"connectbutton";
 			this->connectbutton->Size = System::Drawing::Size(75, 23);
 			this->connectbutton->TabIndex = 0;
 			this->connectbutton->Text = L"Connect";
 			this->connectbutton->UseVisualStyleBackColor = true;
 			this->connectbutton->Click += gcnew System::EventHandler(this, &MyForm::connectbutton_Click);
-			// 
-			// label1
-			// 
-			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(409, 42);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(42, 13);
-			this->label1->TabIndex = 5;
-			this->label1->Text = L"Node 1";
-			// 
-			// label2
-			// 
-			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(409, 68);
-			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(42, 13);
-			this->label2->TabIndex = 5;
-			this->label2->Text = L"Node 2";
-			// 
-			// label3
-			// 
-			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(409, 94);
-			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(41, 13);
-			this->label3->TabIndex = 6;
-			this->label3->Text = L"Weight";
-			// 
-			// label4
-			// 
-			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(460, 13);
-			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(97, 13);
-			this->label4->TabIndex = 7;
-			this->label4->Text = L"Manually add edge";
-			// 
-			// StartVertex
-			// 
-			this->StartVertex->Location = System::Drawing::Point(457, 237);
-			this->StartVertex->Name = L"StartVertex";
-			this->StartVertex->Size = System::Drawing::Size(100, 20);
-			this->StartVertex->TabIndex = 8;
-			// 
-			// label5
-			// 
-			this->label5->AutoSize = true;
-			this->label5->Location = System::Drawing::Point(460, 221);
-			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(76, 13);
-			this->label5->TabIndex = 9;
-			this->label5->Text = L"Starting Vertex";
-			// 
-			// PrimButton
-			// 
-			this->PrimButton->Location = System::Drawing::Point(482, 263);
-			this->PrimButton->Name = L"PrimButton";
-			this->PrimButton->Size = System::Drawing::Size(75, 23);
-			this->PrimButton->TabIndex = 10;
-			this->PrimButton->Text = L"Prim";
-			this->PrimButton->UseVisualStyleBackColor = true;
-			this->PrimButton->Click += gcnew System::EventHandler(this, &MyForm::PrimButton_Click);
 			// 
 			// MyForm
 			// 
@@ -306,6 +291,7 @@ namespace Prim {
 		Matrix *connectionMatrix = nullptr;
 
 	private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
+		errorlabel->Text = "";
 		connectionMatrix = new Matrix(ARRAY_SIZE, ARRAY_SIZE);
 		LoadMatrix(connectionMatrix);
 		//nodes = gcnew array<Rectangle*>(ARRAY_SIZE);
@@ -367,12 +353,18 @@ private: System::Void connectbutton_Click(System::Object^  sender, System::Event
 	//int weight = Convert::ToInt32(weightbox->Text);
 	int node1 = (node1box->Text == "") ? -1 : int::Parse(node1box->Text);
 	int node2 = (node2box->Text == "") ? -1 : int::Parse(node2box->Text);
-	int weight = (weightbox->Text == "") ? -1 : int::Parse(weightbox->Text);
+	//int weight = (weightbox->Text == "") ? -1 : int::Parse(weightbox->Text);
+
+	if (node1 == -1 || node2 == -1) {
+		errorlabel->Text = "Error: Node index must not be empty";
+		panel1->Refresh();
+		return;
+	}
 
 	String ^message = gcnew String("");
-	bool success = CheckValidConnection(node1, node2, weight, message);
+	bool success = TryPrim(node1, node2, 5, message);
 	if (!success) {
-		errorlabel->Text = message;
+		errorlabel->Text = "Error: " + message;
 	}
 	else {
 		errorlabel->Text = "";
@@ -381,7 +373,13 @@ private: System::Void connectbutton_Click(System::Object^  sender, System::Event
 }
 private: System::Void PrimButton_Click(System::Object^  sender, System::EventArgs^  e) {
 	int vertex = (StartVertex->Text == "") ? -1 : int::Parse(StartVertex->Text);
-
+	int blueNode = -1;
+	if (!connectionMatrix->InTree(vertex))
+		SetBlueLabel(nodes[vertex]);
+	connectionMatrix->Prim(vertex, blueNode);
+	if (blueNode != -1)
+		SetBlueLabel(nodes[blueNode]);
+	panel1->Refresh();
 }
 };
 }

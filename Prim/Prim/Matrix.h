@@ -10,17 +10,19 @@ public:
 	~Matrix();
 	//void Display() const;
 	bool Connect(int, int, int);
-	void Prim(int);
+	void Prim(int, int &);
 	bool PrimEdge(int, int);
 	bool ConnectionExists(int, int) const;
 	bool IsPrim(int, int) const;
+	bool InTree(int) const;
 	//void SetBeginning();
 	//bool AtEnd() const;
 	Connection *GetConnection(int);
 	int ConnectionCount() const;
 private:
 	Connection *GetConnection(int, int);
-	
+	int GetClosestNode(int &);
+	bool IsTreeComplete();
 	PtrArray<Connection> connectionList;
 	//list<Connection> connectionList;
 	//list<Connection>::iterator it;

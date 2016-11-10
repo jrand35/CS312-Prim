@@ -76,8 +76,46 @@ bool Matrix::Connect(int node1, int node2, int weight) {
 	return true;
 }
 
-void Matrix::Prim(int startVertex) {
+void Matrix::Prim(int startVertex, int &blueVertex) {
+	if (IsTreeComplete())
+		return;
+	//Starting the tree
+	if (!tree[startVertex]) {
+		tree[startVertex] = true;
+	}
+	int node1;
+	int node2 = GetClosestNode(node1);
 
+	if (node2 != -1) {
+		PrimEdge(node1, node2);
+		blueVertex = node2;
+	}
+}
+
+bool Matrix::IsTreeComplete() {
+	bool complete = true;
+	for (int i = 0; i < width; i++) {
+		if (!tree[i])
+			return false;
+	}
+	return true;
+}
+
+int Matrix::GetClosestNode(int &node1) {
+	int weight = 99999;
+	int closestNode = -1;
+	for (int node = 0; node < width; node++) {
+		if (tree[node]) {
+			for (int i = 0; i < width; i++) {
+				if (node != i && data[node][i] < weight && data[node][i] != 0 && !IsPrim(node, i) && !tree[i]) {
+					weight = data[node][i];
+					closestNode = i;
+					node1 = node;
+				}
+			}
+		}
+	}
+	return closestNode;
 }
 
 bool Matrix::PrimEdge(int node1, int node2) {
@@ -102,6 +140,10 @@ bool Matrix::ConnectionExists(int node1, int node2) const {
 
 bool Matrix::IsPrim(int node1, int node2) const {
 	return (prim[node1][node2] || prim[node2][node1]);
+}
+
+bool Matrix::InTree(int node) const {
+	return (tree[node]);
 }
 
 //void Matrix::SetBeginning() {
