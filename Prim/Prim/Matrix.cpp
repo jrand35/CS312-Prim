@@ -76,7 +76,11 @@ bool Matrix::Connect(int node1, int node2, int weight) {
 	return true;
 }
 
-bool Matrix::Prim(int node1, int node2) {
+void Matrix::Prim(int startVertex) {
+
+}
+
+bool Matrix::PrimEdge(int node1, int node2) {
 
 	if (data[node1][node2] == 0 || data[node2][node1] == 0) {
 		return false;

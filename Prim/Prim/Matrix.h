@@ -10,7 +10,8 @@ public:
 	~Matrix();
 	//void Display() const;
 	bool Connect(int, int, int);
-	bool Prim(int, int);
+	void Prim(int);
+	bool PrimEdge(int, int);
 	bool ConnectionExists(int, int) const;
 	bool IsPrim(int, int) const;
 	//void SetBeginning();
@@ -19,6 +20,7 @@ public:
 	int ConnectionCount() const;
 private:
 	Connection *GetConnection(int, int);
+	
 	PtrArray<Connection> connectionList;
 	//list<Connection> connectionList;
 	//list<Connection>::iterator it;
