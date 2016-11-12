@@ -1,6 +1,6 @@
-#include "Matrix.h"
+#include "Graph.h"
 
-Matrix::Matrix(int width, int height) {
+Graph::Graph(int width, int height) {
 	connectionCount = 0;
 	this->width = width;
 	this->height = height;
@@ -28,7 +28,7 @@ Matrix::Matrix(int width, int height) {
 	}
 }
 
-Matrix::~Matrix() {
+Graph::~Graph() {
 	for (int i = 0; i < height; i++) {
 		delete[] data[i];
 	}
@@ -56,7 +56,7 @@ Matrix::~Matrix() {
 //	}
 //}
 
-bool Matrix::Connect(int node1, int node2, int weight) {
+bool Graph::Connect(int node1, int node2, int weight) {
 	if (data[node1][node2] != 0 || data[node2][node1] != 0)
 		return false;
 	data[node1][node2] = weight;
@@ -76,7 +76,7 @@ bool Matrix::Connect(int node1, int node2, int weight) {
 	return true;
 }
 
-void Matrix::Prim(int startVertex, int &blueVertex) {
+void Graph::Prim(int startVertex, int &blueVertex) {
 	if (IsTreeComplete())
 		return;
 	//Starting the tree
@@ -92,7 +92,7 @@ void Matrix::Prim(int startVertex, int &blueVertex) {
 	}
 }
 
-bool Matrix::IsTreeComplete() {
+bool Graph::IsTreeComplete() {
 	bool complete = true;
 	for (int i = 0; i < width; i++) {
 		if (!tree[i])
@@ -101,7 +101,7 @@ bool Matrix::IsTreeComplete() {
 	return true;
 }
 
-int Matrix::GetClosestNode(int &node1) {
+int Graph::GetClosestNode(int &node1) {
 	int weight = 99999;
 	int closestNode = -1;
 	for (int node = 0; node < width; node++) {
@@ -118,7 +118,7 @@ int Matrix::GetClosestNode(int &node1) {
 	return closestNode;
 }
 
-bool Matrix::PrimEdge(int node1, int node2) {
+bool Graph::PrimEdge(int node1, int node2) {
 
 	if (data[node1][node2] == 0 || data[node2][node1] == 0) {
 		return false;
@@ -134,15 +134,15 @@ bool Matrix::PrimEdge(int node1, int node2) {
 	return true;
 }
 
-bool Matrix::ConnectionExists(int node1, int node2) const {
+bool Graph::ConnectionExists(int node1, int node2) const {
 	return (data[node1][node2] != 0 || data[node2][node1] != 0);
 }
 
-bool Matrix::IsPrim(int node1, int node2) const {
+bool Graph::IsPrim(int node1, int node2) const {
 	return (prim[node1][node2] || prim[node2][node1]);
 }
 
-bool Matrix::InTree(int node) const {
+bool Graph::InTree(int node) const {
 	return (tree[node]);
 }
 
@@ -160,11 +160,11 @@ bool Matrix::InTree(int node) const {
 //	return c;
 //}
 
-Connection *Matrix::GetConnection(int index) {
+Connection *Graph::GetConnection(int index) {
 	return connectionList[index];
 }
 
-Connection *Matrix::GetConnection(int node1, int node2) {
+Connection *Graph::GetConnection(int node1, int node2) {
 	for (int i = 0; i < connectionCount; i++) {
 		if (connectionList[i]->Node1 == node1 && connectionList[i]->Node2 == node2) {
 			return connectionList[i];
@@ -174,6 +174,6 @@ Connection *Matrix::GetConnection(int node1, int node2) {
 	return nullptr;
 }
 
-int Matrix::ConnectionCount() const {
+int Graph::ConnectionCount() const {
 	return connectionCount;
 }

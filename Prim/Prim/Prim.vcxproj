@@ -127,7 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="Graph.cpp" />
     <ClCompile Include="MyForm.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
@@ -140,7 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Connection.h" />
-    <ClInclude Include="Matrix.h" />
+    <ClInclude Include="Graph.h" />
     <ClInclude Include="MyForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>

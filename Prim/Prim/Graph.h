@@ -4,10 +4,10 @@
 using namespace std;
 using namespace System::Collections::Generic;
 
-class Matrix {
+class Graph {
 public:
-	Matrix(int, int);
-	~Matrix();
+	Graph(int, int);
+	~Graph();
 	//void Display() const;
 	bool Connect(int, int, int);
 	void Prim(int, int &);

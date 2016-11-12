@@ -1,5 +1,5 @@
 #pragma once
-#include "Matrix.h"
+#include "Graph.h"
 #include <fstream>
 #include <string>
 
@@ -37,7 +37,7 @@ namespace Prim {
 			{
 				delete components;
 			}
-			delete connectionMatrix;
+			delete graph;
 		}
 	private: System::Windows::Forms::Button^  connectbutton;
 	protected:
@@ -65,7 +65,7 @@ namespace Prim {
 	protected:
 	private:
 
-		void LoadMatrix(Matrix *m) {
+		void LoadGraph(Graph *g) {
 			ifstream file;
 			file.open("Small Graph.txt");
 			if (file.fail()) {
@@ -76,7 +76,7 @@ namespace Prim {
 				file >> n1 >> n2 >> w;
 				if (n1 != "" && n1 != "Vertex")
 				{
-					bool result = m->Connect(stoi(n1), stoi(n2), stoi(w));
+					bool result = g->Connect(stoi(n1), stoi(n2), stoi(w));
 					if (!result) {
 						
 					}
@@ -98,11 +98,11 @@ namespace Prim {
 				message = "Cannot connect to the same node";
 				return false;
 			}
-			else if (!connectionMatrix->ConnectionExists(node1, node2)) {
+			else if (!graph->ConnectionExists(node1, node2)) {
 				message = "These nodes are not connected";
 				return false;
 			}
-			else if (connectionMatrix->IsPrim(node1, node2)) {
+			else if (graph->IsPrim(node1, node2)) {
 				message = "Prim connection already exists";
 				return false;
 			}
@@ -110,7 +110,7 @@ namespace Prim {
 				message = "Weight cannot be 0";
 				return false;
 			}
-			connectionMatrix->PrimEdge(node1, node2);
+			graph->PrimEdge(node1, node2);
 			message = "Success";
 
 			SetBlueLabel(nodes[node1]);
@@ -320,12 +320,12 @@ namespace Prim {
 		SolidBrush ^b;
 		Pen ^normalPen;
 		Pen ^spanPen;
-		Matrix *connectionMatrix = nullptr;
+		Graph *graph = nullptr;
 
 	private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
 		errorlabel->Text = "";
-		connectionMatrix = new Matrix(ARRAY_SIZE, ARRAY_SIZE);
-		LoadMatrix(connectionMatrix);
+		graph = new Graph(ARRAY_SIZE, ARRAY_SIZE);
+		LoadGraph(graph);
 		//nodes = gcnew array<Rectangle*>(ARRAY_SIZE);
 		nodes = gcnew cli::array<Label^, 1>(ARRAY_SIZE);
 		g = panel1->CreateGraphics();
@@ -352,8 +352,8 @@ namespace Prim {
 		nodes[15] = newLabel("15", 160, 80);
 
 		//Add weights
-		for (int i = 0; i < connectionMatrix->ConnectionCount(); i++){
-			Connection *c = connectionMatrix->GetConnection(i);
+		for (int i = 0; i < graph->ConnectionCount(); i++){
+			Connection *c = graph->GetConnection(i);
 			Point node1 = nodes[c->Node1]->Location;
 			Point node2 = nodes[c->Node2]->Location;
 			Point center = Point(node1.X + (node2.X - node1.X) / 2, node1.Y + (node2.Y - node1.Y) / 2);
@@ -375,12 +375,12 @@ namespace Prim {
 
 		//Draw each connection
 		//For loop currently causing issues
-		for (int i = 0; i < connectionMatrix->ConnectionCount(); i++) {
-			Connection *c = connectionMatrix->GetConnection(i);
+		for (int i = 0; i < graph->ConnectionCount(); i++) {
+			Connection *c = graph->GetConnection(i);
 			Label ^s = nodes[c->Node1];
 			Label ^e = nodes[c->Node2];
 			int weight = c->Weight;
-			if (connectionMatrix->IsPrim(c->Node1, c->Node2))
+			if (graph->IsPrim(c->Node1, c->Node2))
 				g->DrawLine(spanPen, s->Location.X + 16, s->Location.Y + 16, e->Location.X + 16, e->Location.Y + 16);
 			else
 				g->DrawLine(normalPen, s->Location.X + 16, s->Location.Y + 16, e->Location.X + 16, e->Location.Y + 16);
@@ -415,9 +415,9 @@ private: System::Void connectbutton_Click(System::Object^  sender, System::Event
 private: System::Void PrimButton_Click(System::Object^  sender, System::EventArgs^  e) {
 	int vertex = (StartVertex->Text == "") ? -1 : int::Parse(StartVertex->Text);
 	int blueNode = -1;
-	if (!connectionMatrix->InTree(vertex))
+	if (!graph->InTree(vertex))
 		SetBlueLabel(nodes[vertex]);
-	connectionMatrix->Prim(vertex, blueNode);
+	graph->Prim(vertex, blueNode);
 	if (blueNode != -1)
 		SetBlueLabel(nodes[blueNode]);
 	panel1->Refresh();
