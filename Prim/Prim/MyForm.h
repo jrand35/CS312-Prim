@@ -52,6 +52,7 @@ namespace Prim {
 	private: System::Windows::Forms::Label^  label5;
 	private: System::Windows::Forms::TextBox^  StartVertex;
 	private: System::Windows::Forms::Button^  PrimButton;
+	private: System::Windows::Forms::Label^  label3;
 
 
 
@@ -131,6 +132,22 @@ namespace Prim {
 			return l;
 		}
 
+		Label^ newLabel2(System::String^ text, int x, int y){
+			Label^ l = gcnew Label();
+			//l->AutoSize = true;
+			l->BackColor = System::Drawing::Color::Transparent;
+			l->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			l->Location = System::Drawing::Point(x, y);
+			l->Name = L"label1asdf";
+			l->Size = System::Drawing::Size(16, 16);
+			l->TabIndex = 0;
+			l->Text = text;
+			l->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->panel1->Controls->Add(l);
+			return l;
+		}
+
 		void SetBlueLabel(Label ^label) {
 			label->BackColor = System::Drawing::Color::Blue;
 			label->ForeColor = System::Drawing::Color::White;
@@ -148,6 +165,7 @@ namespace Prim {
 		void InitializeComponent(void)
 		{
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
+			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->PrimButton = (gcnew System::Windows::Forms::Button());
 			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->StartVertex = (gcnew System::Windows::Forms::TextBox());
@@ -163,6 +181,7 @@ namespace Prim {
 			// 
 			// panel1
 			// 
+			this->panel1->Controls->Add(this->label3);
 			this->panel1->Controls->Add(this->PrimButton);
 			this->panel1->Controls->Add(this->label5);
 			this->panel1->Controls->Add(this->StartVertex);
@@ -179,6 +198,15 @@ namespace Prim {
 			this->panel1->TabIndex = 0;
 			this->panel1->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MyForm::panel1_Paint);
 			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->Location = System::Drawing::Point(381, 240);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(70, 13);
+			this->label3->TabIndex = 11;
+			this->label3->Text = L"Starting node";
+			// 
 			// PrimButton
 			// 
 			this->PrimButton->Location = System::Drawing::Point(482, 263);
@@ -192,11 +220,13 @@ namespace Prim {
 			// label5
 			// 
 			this->label5->AutoSize = true;
-			this->label5->Location = System::Drawing::Point(460, 221);
+			this->label5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label5->Location = System::Drawing::Point(418, 217);
 			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(76, 13);
+			this->label5->Size = System::Drawing::Size(139, 17);
 			this->label5->TabIndex = 9;
-			this->label5->Text = L"Starting Vertex";
+			this->label5->Text = L"Run Prim\'s Algorithm";
 			// 
 			// StartVertex
 			// 
@@ -208,16 +238,18 @@ namespace Prim {
 			// label4
 			// 
 			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(460, 13);
+			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label4->Location = System::Drawing::Point(432, 44);
 			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(97, 13);
+			this->label4->Size = System::Drawing::Size(128, 17);
 			this->label4->TabIndex = 7;
 			this->label4->Text = L"Manually add edge";
 			// 
 			// label2
 			// 
 			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(409, 68);
+			this->label2->Location = System::Drawing::Point(409, 99);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(42, 13);
 			this->label2->TabIndex = 5;
@@ -226,7 +258,7 @@ namespace Prim {
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(409, 42);
+			this->label1->Location = System::Drawing::Point(409, 73);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(42, 13);
 			this->label1->TabIndex = 5;
@@ -244,21 +276,21 @@ namespace Prim {
 			// 
 			// node2box
 			// 
-			this->node2box->Location = System::Drawing::Point(457, 65);
+			this->node2box->Location = System::Drawing::Point(457, 96);
 			this->node2box->Name = L"node2box";
 			this->node2box->Size = System::Drawing::Size(100, 20);
 			this->node2box->TabIndex = 2;
 			// 
 			// node1box
 			// 
-			this->node1box->Location = System::Drawing::Point(457, 39);
+			this->node1box->Location = System::Drawing::Point(457, 70);
 			this->node1box->Name = L"node1box";
 			this->node1box->Size = System::Drawing::Size(100, 20);
 			this->node1box->TabIndex = 1;
 			// 
 			// connectbutton
 			// 
-			this->connectbutton->Location = System::Drawing::Point(482, 91);
+			this->connectbutton->Location = System::Drawing::Point(482, 122);
 			this->connectbutton->Name = L"connectbutton";
 			this->connectbutton->Size = System::Drawing::Size(75, 23);
 			this->connectbutton->TabIndex = 0;
@@ -273,7 +305,7 @@ namespace Prim {
 			this->ClientSize = System::Drawing::Size(584, 562);
 			this->Controls->Add(this->panel1);
 			this->Name = L"MyForm";
-			this->Text = L"MyForm";
+			this->Text = L"Prim\'s Algorithm";
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
 			this->panel1->ResumeLayout(false);
 			this->panel1->PerformLayout();
@@ -318,6 +350,15 @@ namespace Prim {
 		nodes[13] = newLabel("13", 400, 110);
 		nodes[14] = newLabel("14", 270, 105);
 		nodes[15] = newLabel("15", 160, 80);
+
+		//Add weights
+		for (int i = 0; i < connectionMatrix->ConnectionCount(); i++){
+			Connection *c = connectionMatrix->GetConnection(i);
+			Point node1 = nodes[c->Node1]->Location;
+			Point node2 = nodes[c->Node2]->Location;
+			Point center = Point(node1.X + (node2.X - node1.X) / 2, node1.Y + (node2.Y - node1.Y) / 2);
+			newLabel2(c->Weight.ToString(), center.X + 8, center.Y + 8);
+		}
 
 	}
 	private: System::Void panel1_Paint(System::Object^  sender, System::Windows::Forms::PaintEventArgs^  e) {
