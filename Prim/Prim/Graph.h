@@ -23,7 +23,8 @@ private:
 	Connection *GetConnection(int, int);
 	int GetClosestNode(int &);
 	bool IsTreeComplete();
-	PtrArray<Connection> connectionList;
+	//PtrArray<Connection> connectionList;
+	Connection connectionList[100];
 	//list<Connection> connectionList;
 	//list<Connection>::iterator it;
 	bool *tree;

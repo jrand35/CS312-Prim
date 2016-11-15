@@ -61,11 +61,12 @@ bool Graph::Connect(int node1, int node2, int weight) {
 		return false;
 	data[node1][node2] = weight;
 	data[node2][node1] = weight;
-	Connection *c = new Connection;
-	c->Node1 = node1;
-	c->Node2 = node2;
-	c->Weight = weight;
-	connectionList.Add(*c);
+	Connection c;
+	c.Node1 = node1;
+	c.Node2 = node2;
+	c.Weight = weight;
+	//connectionList.Add(*c);
+	connectionList[connectionCount] = c;
 
 	//if (!tree[node1])
 	//	tree[node1] = true;
@@ -161,13 +162,13 @@ bool Graph::InTree(int node) const {
 //}
 
 Connection *Graph::GetConnection(int index) {
-	return connectionList[index];
+	return &connectionList[index];
 }
 
 Connection *Graph::GetConnection(int node1, int node2) {
 	for (int i = 0; i < connectionCount; i++) {
-		if (connectionList[i]->Node1 == node1 && connectionList[i]->Node2 == node2) {
-			return connectionList[i];
+		if (connectionList[i].Node1 == node1 && connectionList[i].Node2 == node2) {
+			return &connectionList[i];
 		}
 	}
 

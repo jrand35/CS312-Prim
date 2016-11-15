@@ -1,11 +1,11 @@
 #include "MyForm.h"
-#include "Matrix.h"
+#include "Graph.h"
 using namespace Prim;
 using namespace System;
 using namespace System::Windows::Forms;
 #include <iostream>
 
-void LoadMatrix(Matrix*);
+void LoadGraph(Graph*);
 
 [STAThreadAttribute]
 int main(cli::array<System::String^, 1>^ args) {
@@ -16,8 +16,8 @@ int main(cli::array<System::String^, 1>^ args) {
 
 	return 0;
 
-	Matrix *a = new Matrix(16, 16);
-	LoadMatrix(a);
+	Graph *g = new Graph(16, 16);
+	LoadGraph(g);
 	//cout << a.Connect(0, 2, 10);
 
 
@@ -28,7 +28,7 @@ int main(cli::array<System::String^, 1>^ args) {
 
 
 //Works
-void LoadMatrix(Matrix *m) {
+void LoadGraph(Graph *m) {
 	ifstream file;
 	file.open("Small Graph.txt");
 	if (file.fail()) {
